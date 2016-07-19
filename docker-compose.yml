@@ -1,0 +1,6 @@
+version: '2'
+services:
+    volume_www:
+        build: ./volume
+        volumes: 
+            - ../www:/var/www  
