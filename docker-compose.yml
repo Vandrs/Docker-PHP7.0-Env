@@ -3,4 +3,4 @@ services:
     volume_www:
         build: ./volume
         volumes: 
-            - ../www:/var/www  
+            - ./www:/var/www  
