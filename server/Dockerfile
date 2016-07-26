@@ -6,7 +6,7 @@ MAINTAINER Vanderson Nunes <vann.nunes@gmail.com>
 
 RUN DEBIAN_FRONTEND=noninteractive
 RUN locale-gen pt_BR.UTF-8
-RUN dpk-reconfigure locales
+# RUN dpk-reconfigure locales
 
 ENV LANGUAGE=pt_BR.UTF-8
 ENV LC_ALL=pt_BR.UTF-8
@@ -53,16 +53,13 @@ RUN apt-get update && apt-get install -y --force-yes \
         curl \
         vim \
         nano \
-	mysql-cli
+	mysql-client
 
 # Clean up, to free some space
 RUN apt-get clean
 
 # remove load xdebug extension (only load on phpunit command)
 RUN sed -i 's/^/;/g' /etc/php/7.0/cli/conf.d/20-xdebug.ini
-
-# Add bin folder of composer to PATH.
-RUN echo "export PATH=${PATH}:/var/www/laravel/vendor/bin" >> ~/.bashrc
 
 # Install Composer
 RUN curl -s http://getcomposer.org/installer | php \
