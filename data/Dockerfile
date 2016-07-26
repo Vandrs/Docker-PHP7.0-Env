@@ -1,6 +1,6 @@
 FROM debian:jessie
 
-MANTAINER Vanderson Nunes <vann.nunes@gmail.com>
+MAINTAINER Vanderson Nunes <vann.nunes@gmail.com>
 
 CMD ["true"]
 

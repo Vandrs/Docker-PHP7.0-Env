@@ -5,10 +5,8 @@ version: '2'
 #############
 services:
     nginx:
-        build:
-            context: ./nginx
-            args:
-                - PHP_UPSTREAM=php-fpm
+        container_name: php7-server
+        build: ./nginx
         volumes_from:
             - volume_www
         volumes:
@@ -25,7 +23,7 @@ services:
     memcached:
         build: ./memcached
         volumes_from:
-            - volumes_data
+            - volume_data
         volumes:
             - ./logs/memcached/:/var/log/memcached
         ports:
@@ -34,11 +32,7 @@ services:
             - php-fpm
 
     php-fpm:
-        build:
-            context: ./php-fpm
-            args:
-                - INSTALL_MONGO=false
-                - INSTALL_XDEBUG=false
+        build: ./php-fpm
         volumes_from:
             - volume_www
         expose:
