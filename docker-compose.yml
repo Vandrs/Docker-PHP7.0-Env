@@ -26,6 +26,9 @@ services:
             - volume_data
         volumes:
             - ./logs/memcached/:/var/log/memcached
+        networks:
+            www_net:
+                ipv4_address: 172.29.0.102
         ports:
             - "11211"
         links:
@@ -35,6 +38,9 @@ services:
         build: ./php-fpm
         volumes_from:
             - volume_www
+        networks:
+            www_net:
+                ipv4_address: 172.29.0.103
         expose:
             - "9000"
 
