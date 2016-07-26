@@ -1,6 +1,69 @@
 version: '2'
+
+#############
+# Services
+#############
 services:
+    nginx:
+        build:
+            context: ./nginx
+            args:
+                - PHP_UPSTREAM=php-fpm
+        volumes_from:
+            - volume_www
+        volumes:
+            - ./logs/nginx/:/var/log/nginx 
+        networks:
+            www_net:
+                ipv4_address: 172.29.0.101
+        ports:
+            - "80"
+            - "443"
+        links:
+            - php-fpm
+
+    memcached:
+        build: ./memcached
+        volumes_from:
+            - volumes_data
+        volumes:
+            - ./logs/memcached/:/var/log/memcached
+        ports:
+            - "11211"
+        links:
+            - php-fpm
+
+    php-fpm:
+        build:
+            context: ./php-fpm
+            args:
+                - INSTALL_MONGO=false
+                - INSTALL_XDEBUG=false
+        volumes_from:
+            - volume_www
+        expose:
+            - "9000"
+
+
+#################
+##   Volumes
+#################
+
     volume_www:
         build: ./volume
         volumes: 
-            - ./www:/var/www  
+            - ./www:/var/www
+    volume_data:
+        build: ./data
+        volumes:
+            - ./data/memcached:/var/lib/memcached
+
+#################
+##   Network
+#################
+networks:
+    www_net:
+        driver: bridge
+        ipam:
+          config:
+          - subnet: 172.29.0.0/24
